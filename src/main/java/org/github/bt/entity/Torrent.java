@@ -1,6 +1,13 @@
 package org.github.bt.entity;
 
+import lombok.extern.slf4j.Slf4j;
+import org.github.bt.bencode.Bencode;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 种子信息
@@ -8,6 +15,7 @@ import java.util.HashMap;
  * @author wenfs
  * @date 2020/5/9 20:44
  */
+@Slf4j
 public class Torrent extends HashMap {
 
     /**
@@ -110,5 +118,23 @@ public class Torrent extends HashMap {
      * {@value}：路径UTF8
      */
     public static final String PATH_UTF8 = "path.utf-8";
+
+    public Torrent(Map<String, ?> dataMap) {
+        this.putAll(dataMap);
+    }
+
+    public Torrent(String pathname) {
+        try {
+            FileInputStream inputStream = new FileInputStream(pathname);
+            Map<String, ?> dataMap = (Map<String, ?>) Bencode.decode(inputStream);
+            this.putAll(dataMap);
+        } catch (FileNotFoundException e) {
+            log.error("torrent file not found!", e);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+        Map<String,?> infoMap = (Map<String, ?>) this.get(INFO);
+
+    }
 
 }
