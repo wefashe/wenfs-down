@@ -128,6 +128,11 @@ public class Bencode {
         return new Bencode().bencode(-2, inputStream);
     }
 
+    public static Object decode(InputStream in) throws IOException {
+        DataInputStream inputStream = new DataInputStream(in);
+        return new Bencode().bencode(-2, inputStream);
+    }
+
 
     private Object bencode(int var, DataInputStream in) throws IOException {
         if (var == -2) {

@@ -1,6 +1,7 @@
 package org.github.bt.bencode;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class BencodeTest {
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void encode() throws IOException {
@@ -46,6 +49,7 @@ public class BencodeTest {
     public void decode() throws IOException {
         String s = "d1:ii1234567890e4:key16:value23:objl7:列表16:list 214:i love coding!i1234567890ee3:str14:i love coding!e";
         Map map = (Map) Bencode.decode(s);
-        System.out.println(map.toString());
+        String json = mapper.writeValueAsString(map);
+        System.out.println(json);
     }
 }
